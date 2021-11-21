@@ -1,24 +1,42 @@
 import {useRouter} from "next/router";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useAppSelector} from "../../store/hooks/hooks";
 import {packageSlice} from "../../store/reducers/packageReducer";
+import axios from "axios";
+import {useDispatch} from "react-redux";
 
 export default function Id () {
     const route = useRouter();
 
+    const [valueSearch, setSearchValue] = useState();
+    const dispatch = useDispatch();
+    const {getData} = packageSlice.actions;
+    useEffect(()=>{
+        axios.get("http://localhost:8080").then(res=>{
+            dispatch(getData(res.data))
+        })
+
+    }, [])
     useEffect(()=>{
         if(route.query) {
             console.log(route.query.id)
         }
     }, [])
 
+
+
     const {packages} = useAppSelector(state => state.packageReducer);
     const {} = packageSlice.actions;
+
+
+    if(packages.length ===0){
+        return <></>
+    }
 
     return <div className={`main`}>
         <div className={`list__background`}>
             <div className={`list__container`}>
-                Станция <span className={`list_name`}>{packages[Number(route.query.id)].city} {packages[Number(route.query.id)].name}</span>
+                Станция <span className={`list_name`}>{packages[Number(route.query.id)]?.city} {packages[Number(route.query.id)].name}</span>
             </div>
         </div>
         <div className={`container`}>

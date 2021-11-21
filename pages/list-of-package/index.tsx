@@ -1,12 +1,30 @@
 import {useAppSelector} from "../../store/hooks/hooks";
 import {packageSlice} from "../../store/reducers/packageReducer";
+import {useEffect} from "react";
+import axios from "axios";
+import {useDispatch} from "react-redux";
 
 export default function Index() {
 
 
     const {packages} = useAppSelector(state => state.packageReducer);
     const {} = packageSlice.actions;
+    const dispatch = useDispatch();
+    const {getData} = packageSlice.actions;
 
+    useEffect(()=>{
+        axios.get("https://bfc9-188-243-159-197.ngrok.io").then(res=>{
+            dispatch(getData(res.data))
+        })
+
+    }, [])
+
+    const {} = packageSlice.actions;
+
+
+    if(packages.length ===0){
+        return <></>
+    }
     return (<>
             <div className={`main`}>
             {packages.map((package, i) => (

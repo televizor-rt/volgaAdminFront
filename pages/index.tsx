@@ -15,7 +15,7 @@ export default function Home() {
     const {getData} = packageSlice.actions;
 
     useEffect(()=>{
-        axios.get("http://localhost:8080").then(res=>{
+        axios.get("https://bfc9-188-243-159-197.ngrok.io").then(res=>{
             dispatch(getData(res.data))
         })
 
